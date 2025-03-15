@@ -8,6 +8,10 @@ app = Flask(__name__)
 from PIL import Image, ImageDraw, ImageFont
 import os
 
+from utils.num2str import *
+
+ramothsava_year = 119
+
 def generate_receipt_image(name, phone, address_line1, address_line2, amount, output_folder, logo_path=None, signature_path=None):
     """Generates a PNG receipt image with address lines, amount, logo, border, signature, and different font sizes."""
     width, height = 400, 300
@@ -23,12 +27,17 @@ def generate_receipt_image(name, phone, address_line1, address_line2, amount, ou
         data_font = ImageFont.load_default()
         address_font = ImageFont.load_default()
 
-    receipt_text = "Receipt"
-    name_text = f"Name: {name}"
+    # Convert amount ruppes to words
+    amount_str = number_to_words_rupees(int(amount))
+
+    receipt_text = f"Sri Rama Bhaktha Sabha (R) \nReceipt"
+    name_text = f"Received with thanks from Sri/Smt: {name}"
     phone_text = f"Phone: {phone}"
     address_line1_text = f"Address Line 1: {address_line1}"
     address_line2_text = f"Address Line 2: {address_line2}"
+    towards_text = f"Towards {ramothsava_year}th year ramothsava celebrations "
     amount_text = f"Amount: ₹{amount}"
+    amount_words_text = f"Amountg in words: {amount_str}"
     sign_text = "Sign"
 
     receipt_bbox = d.textbbox((0, 0), receipt_text, font=receipt_font)
@@ -37,6 +46,7 @@ def generate_receipt_image(name, phone, address_line1, address_line2, amount, ou
     address_line1_bbox = d.textbbox((0, 0), address_line1_text, font=address_font)
     address_line2_bbox = d.textbbox((0, 0), address_line2_text, font=address_font)
     amount_bbox = d.textbbox((0, 0), amount_text, font=data_font)
+    amount_words_bbox = d.textbbox((0, 0), amount_words_text, font=data_font)
     sign_bbox = d.textbbox((0, 0), sign_text, font=data_font)
 
     receipt_width = receipt_bbox[2] - receipt_bbox[0]
@@ -60,6 +70,7 @@ def generate_receipt_image(name, phone, address_line1, address_line2, amount, ou
     address_line1_x = 20
     address_line2_x = 20
     amount_x = 20
+    amount_words_x = 20
     sign_x = width - sign_width - 10
 
     receipt_y = 30
@@ -68,6 +79,7 @@ def generate_receipt_image(name, phone, address_line1, address_line2, amount, ou
     address_line1_y = phone_y + phone_height + 15
     address_line2_y = address_line1_y + address_line1_height + 10
     amount_y = address_line2_y + address_line2_height + 15
+    amount_words_y = amount_y + amount_height + 15
     sign_y = height - sign_height - 10
 
     d.text((receipt_x, receipt_y), receipt_text, fill='black', font=receipt_font)
@@ -76,6 +88,7 @@ def generate_receipt_image(name, phone, address_line1, address_line2, amount, ou
     d.text((address_line1_x, address_line1_y), address_line1_text, fill='black', font=address_font)
     d.text((address_line2_x, address_line2_y), address_line2_text, fill='black', font=address_font)
     d.text((amount_x, amount_y), amount_text, fill='black', font=data_font)
+    d.text((amount_words_x, amount_words_y), amount_words_text, fill='black', font=data_font)
     d.text((sign_x - 20, sign_y - 10), sign_text, fill='black', font=data_font)
 
     if logo_path and os.path.exists(logo_path):
