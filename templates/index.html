@@ -2,27 +2,103 @@
 <html>
 <head>
     <title>Sri Rama Bhaktha Sabha (R) - Receipt Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23333" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 8px;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Receipt Generator</h1>
-    <form method="POST">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name"><br><br>
-        <label for="phone">Phone Number (with country code):</label><br>
-        <input type="tel" id="phone" name="phone"><br><br>
-        <label for="address_line1">Address Line 1:</label><br>
-        <input type="text" id="address_line1" name="address_line1"><br><br>
-        <label for="address_line2">Address Line 2:</label><br>
-        <input type="text" id="address_line2" name="address_line2"><br><br>
-        <label for="amount">Amount (Rupees):</label><br>
-        <input type="number" id="amount" name="amount"><br><br>
-        <label for="payment_type">Payment Type:</label><br>
-        <select id="payment_type" name="payment_type">
-            <option value="cash">Cash</option>
-            <option value="cheque">Cheque</option>
-            <option value="UPI">UPI</option>
-        </select><br><br>
-        <input type="submit" value="Generate Receipt">
-    </form>
+    <div class="form-container">
+        <h1>Receipt Generator</h1>
+        <form method="POST" class="form">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="phone">Phone Number (with country code):</label><br>
+            <input type="tel" id="phone" name="phone" required><br><br>
+            <label for="address_line1">Address Line 1:</label><br>
+            <input type="text" id="address_line1" name="address_line1" required><br><br>
+            <label for="address_line2">Address Line 2:</label><br>
+            <input type="text" id="address_line2" name="address_line2"><br><br>
+            <label for="amount">Amount (Rupees):</label><br>
+            <input type="number" id="amount" name="amount" required><br><br>
+            <label for="payment_type">Payment Type:</label><br>
+            <select id="payment_type" name="payment_type" required>
+                <option value="cash">Cash</option>
+                <option value="cheque">Cheque</option>
+                <option value="UPI">UPI</option>
+            </select><br><br>
+            <input type="submit" value="Generate Receipt">
+        </form>
+    </div>
 </body>
 </html>
