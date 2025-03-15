@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Success</title>
+</head>
+<body>
+    <h1>Receipt Generated and Sent!</h1>
+    <p>Receipt for {{ name }} ({{ phone }}) has been generated and sent to WhatsApp.</p>
+    <form action="/download_receipt" method="post">
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="phone" value="{{ phone }}">
+        <input type="submit" value="Download Receipt">
+    </form>
+
+</body>
+</html>
