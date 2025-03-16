@@ -1,10 +1,17 @@
 from flask import Flask, render_template, request, send_file
 import os
+import traceback
 
 
 app = Flask(__name__)
 from utils.gen_rec_img import generate_receipt_image
 from utils.save_csv import write_to_csv
+from pymongo import MongoClient
+
+client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")  # Replace with your MongoDB URL if hosted remotely
+db = client["receipt_db"]  # Database name
+collection = db["receipts"]  # Collection name
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -16,7 +23,7 @@ def index():
         address_line2 = request.form["address_line2"]
         amount = request.form["amount"]
         phone_no_plus = "+" + phone if not phone.startswith("+") else phone
-        output_folder = "D:/Prathith/SRBS_119/Receipts"
+        output_folder = "Receipts"
         print("Submit pressed and details fetched")
         try:
             os.makedirs(output_folder, exist_ok=True)
@@ -32,31 +39,28 @@ def index():
             )
 
             # write data to csv
-            write_to_csv(filename="D:/Prathith/SRBS_119/Receipts/Receipts.csv",
-                         name=name,
-                         phone=phone_no_plus,
-                         address_line1=address_line1,
-                         address_line2=address_line2,
-                         amount=int(amount))
+            receipt_data = {
+                "name": name,
+                "phone": phone_no_plus,
+                "address_line1": address_line1,
+                "address_line2": address_line2,
+                "amount": amount
+            }
+            collection.insert_one(receipt_data)
+
 
             # save_details_to_csv()
 
             print("Generated IMG!")
 
-            return render_template(
-                "success.html",
-                name=name,
-                phone=phone,
-                img_path=img_path,
-                address="address",
-                amount=amount,
-            )
+            return send_file(img_path, as_attachment=True)
 
         except Exception as e:
-            print(f"Error: {e}")
-            return render_template(
-                "error.html", error_message=f"An error occurred: {e}"
-            )
+            tb = traceback.format_exc()
+            print(f"Error occurred:\n{tb}")
+        return render_template(
+            "error.html", error_message=f"An error occurred:\n{tb}"
+        )
 
     return render_template("index.html")
 

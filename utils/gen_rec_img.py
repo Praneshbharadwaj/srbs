@@ -12,7 +12,7 @@ from datetime import datetime
 from utils.serial_num import increment_counter
 
 ramothsava_year = 119
-input_stroke_width = 0.5
+input_stroke_width = int(0.5)
 
 input_name_x = 320
 
@@ -46,7 +46,7 @@ def generate_receipt_image(
 
     print("Fonts generated")
 
-    serial_num = increment_counter("D:/Prathith/SRBS_119/Receipts/serial_num.txt")
+    serial_num = increment_counter("Receipts/serial_num.txt")
     # Convert amount ruppes to words
     now = datetime.now()
     formatted_date = now.strftime("%d-%m-%Y")
