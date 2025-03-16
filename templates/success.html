@@ -1,16 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Success</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .h1 {
+            color: #28a745; /* Green for success */
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff; /* Blue for buttons */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form:last-of-type{
+          margin-bottom: 0;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Receipt Generated and Sent!</h1>
-    <p>Receipt for {{ name }} ({{ phone }}) has been generated and sent to WhatsApp.</p>
-    <form action="/download_receipt" method="post">
-        <input type="hidden" name="name" value="{{ name }}">
-        <input type="hidden" name="phone" value="{{ phone }}">
-        <input type="submit" value="Download Receipt">
+    <h1>Receipt Generated and Saved!</h1>
+    <p>Receipt for {{ name }} ({{ phone }}) has been generated and stored.</p>
+    <form action="/" method="get">
+        <input type="submit" value="Fill Another Receipt">
     </form>
-
 </body>
 </html>
