@@ -9,10 +9,12 @@ import os
 
 from utils.num2str import *
 from datetime import datetime
-
+from utils.serial_num import increment_counter
 
 ramothsava_year = 119
+input_stroke_width = 0.5
 
+input_name_x = 320
 
 def generate_receipt_image(
     name,
@@ -44,20 +46,28 @@ def generate_receipt_image(
 
     print("Fonts generated")
 
+    serial_num = increment_counter("D:/Prathith/SRBS_119/Receipts/serial_num.txt")
     # Convert amount ruppes to words
     now = datetime.now()
-    formatted_date = now.strftime("%d-%m-%Y %H:%M")
+    formatted_date = now.strftime("%d-%m-%Y")
     amount_str = number_to_words_rupees(int(amount))
     srbs_text = f"Sri Rama Bhaktha Sabha (R)"
     receipt_text = f"E-Receipt"
-    name_text = f"Received with thanks from Sri/Smt: {name}"
-    phone_text = f"Phone: {phone}"
-    address_line1_text = f"Address Line 1: {address_line1}"
-    address_line2_text = f"Address Line 2: {address_line2}"
+    name_text = f"{name}"
+    phone_text = f"{phone}"
+    address_line1_text = f"{address_line1}"
+    address_line2_text = f"{address_line2}"
     towards_text = f"Towards {ramothsava_year}th year ramothsava celebrations "
-    amount_text = f"Amount: ₹{amount}"
-    amount_words_text = f"Amount in words: {amount_str} Only"
+    amount_text = f"₹{amount}"
+    amount_words_text = f"{amount_str} Only"
     sign_text = "Signature"
+    serial_num_txt = str(serial_num)
+
+    template_name = "Received with thanks from Sri/Smt:"
+    template_amount = "Amount: "
+    template_amount_words = "Amount in words: "
+    template_date = "Date: "
+    template_sl_no = "No.: "
 
     print("Yet to generate textbox")
 
@@ -99,59 +109,77 @@ def generate_receipt_image(
 
     receipt_x = (width - receipt_width) // 2
     srbs_x = (width - srbs_width) // 2
-    name_x = 20
-    phone_x = 20
-    address_line1_x = 20
-    address_line2_x = 20
-    amount_x = 20
-    amount_words_x = 20
+    template_name_x = 20
+    name_x = input_name_x
+    phone_x = input_name_x
+    address_line1_x = input_name_x
+    address_line2_x = input_name_x
+    template_amount_x = 20
+    template_amount_words_x = 20
+    amount_x = 200
+    amount_words_x = 200
     towards_x = 20
     sign_x = width - sign_width - 30
-    formatted_date_x = 40
+    formatted_date_x = 560
+    template_date_x = 500
+    template_sl_no_x = 20
+    serial_num_x = 80
 
     srbs_y = 30
     receipt_y = srbs_y + srbs_height + 15
     formatted_date_y = receipt_y + receipt_height + 20
+    template_date_y = formatted_date_y
+    template_name_y = formatted_date_y + formatted_date_height + 30
     name_y = formatted_date_y + formatted_date_height + 30
     phone_y = name_y + name_height + 15
     address_line1_y = phone_y + phone_height + 15
     address_line2_y = address_line1_y + address_line1_height + 10
+    template_amount_y = address_line2_y + address_line2_height + 15
     amount_y = address_line2_y + address_line2_height + 15
+    template_amount_words_y = amount_y + amount_height + 15
     amount_words_y = amount_y + amount_height + 15
     towards_y = amount_words_y + amount_words_height + 15
     sign_y = height - sign_height - 10
+    template_sl_no_y = formatted_date_y
+    serial_num_y = formatted_date_y
 
-    d.text((srbs_x, srbs_y), srbs_text, fill="black", font=receipt_font)
-    d.text((receipt_x, receipt_y), receipt_text, fill="black", font=receipt_font)
-    d.text((name_x, name_y), name_text, fill="black", font=data_font)
-    d.text((phone_x, phone_y), phone_text, fill="black", font=data_font)
+    d.text((srbs_x, srbs_y), srbs_text, fill="blue", font=receipt_font)
+    d.text((receipt_x, receipt_y), receipt_text, fill="blue", font=receipt_font)
+    d.text((name_x, name_y), name_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+    d.text((template_name_x, template_name_y), template_name, fill="black", font=data_font)
+    d.text((phone_x, phone_y), phone_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
     d.text(
         (address_line1_x, address_line1_y),
         address_line1_text,
         fill="black",
-        font=address_font,
+        font=address_font, stroke_width=input_stroke_width, stroke_fill='black'
     )
     d.text(
         (address_line2_x, address_line2_y),
         address_line2_text,
         fill="black",
-        font=address_font,
+        font=address_font, stroke_width=input_stroke_width, stroke_fill='black'
     )
-    d.text((amount_x, amount_y), amount_text, fill="black", font=data_font)
+    d.text((template_amount_x, template_amount_y), template_amount, fill="black", font=data_font)
+    d.text((template_amount_words_x, template_amount_words_y), template_amount_words, fill="black", font=data_font)
+    d.text((amount_x, amount_y), amount_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
     d.text(
         (amount_words_x, amount_words_y),
         amount_words_text,
         fill="black",
-        font=data_font,
+        font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
     )
     d.text((towards_x, towards_y), towards_text, fill="black", font=data_font)
     d.text((sign_x - 20, sign_y - 10), sign_text, fill="black", font=data_font)
     d.text(
-        (formatted_date_x - 20, formatted_date_y - 10),
+        (formatted_date_x, formatted_date_y),
         formatted_date,
         fill="black",
-        font=data_font,
+        font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
     )
+    d.text((template_date_x, template_date_y), template_date, fill="black", font=data_font)
+    d.text((template_sl_no_x, template_sl_no_y), template_sl_no, fill="black", font=data_font)
+    d.text((serial_num_x, serial_num_y), serial_num_txt, fill="red", font=data_font)
 
     print("Added details to image")
 
