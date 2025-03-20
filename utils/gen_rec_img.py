@@ -204,7 +204,9 @@ def generate_receipt_image(
     d.rectangle(
         [(10, 10), (width - 10, height - 10)], outline=border_color, width=border_width
     )
-
+    output_folder = "/temp"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     image_filename = f"{name.replace(' ', '_')}_{phone}.png"
     image_path = os.path.join(output_folder, image_filename)
     img.save(image_path, "PNG")
