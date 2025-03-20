@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_file
 from PIL import Image, ImageDraw, ImageFont
 import os
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -204,11 +205,8 @@ def generate_receipt_image(
     d.rectangle(
         [(10, 10), (width - 10, height - 10)], outline=border_color, width=border_width
     )
-    output_folder = "/temp"
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    image_filename = f"{name.replace(' ', '_')}_{phone}.png"
-    image_path = os.path.join(output_folder, image_filename)
-    img.save(image_path, "PNG")
-    print(f"PNG generated successfully and saved to: {image_path}")
-    return image_path
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)  # Reset buffer position for reading
+    print(f"PNG generated successfully and saved")
+    return buffer
