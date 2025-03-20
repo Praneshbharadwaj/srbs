@@ -1,14 +1,4 @@
 def number_to_words_rupees(amount):
-    """
-    Converts an integer amount in rupees to its equivalent in words.
-
-    Args:
-        amount: An integer representing the amount in rupees.
-
-    Returns:
-        A string representing the amount in words.
-    """
-
     if not isinstance(amount, int):
         return "Invalid input. Please provide an integer amount."
 
@@ -30,31 +20,15 @@ def number_to_words_rupees(amount):
         elif num < 20:
             return teens[num - 10]
         else:
-            return tens[num // 10] + (" " + ones[num % 10]) if num % 10 else tens[num // 10]
+            return tens[num // 10] + (" " + ones[num % 10] if num % 10 else "")
 
-    def convert_thousands(num):
+    def convert_below_thousand(num):
         if num == 0:
             return ""
         elif num < 100:
             return convert_hundreds(num)
         else:
             return ones[num // 100] + " Hundred" + (" " + convert_hundreds(num % 100) if num % 100 else "")
-
-    def convert_lakhs(num):
-        if num == 0:
-            return ""
-        elif num < 100:
-            return convert_hundreds(num)
-        else:
-            return ones[num//100] + " Hundred" + (" " + convert_hundreds(num % 100) if num % 100 else "")
-
-    def convert_crores(num):
-        if num == 0:
-            return ""
-        elif num < 100:
-            return convert_hundreds(num)
-        else:
-            return ones[num//100] + " Hundred" + (" " + convert_hundreds(num % 100) if num % 100 else "")
 
     result = ""
 
@@ -70,12 +44,16 @@ def number_to_words_rupees(amount):
     hundreds = amount
 
     if crores:
-        result += convert_hundreds(crores) + " Crore" + (" " if (lakhs or thousands or hundreds) else "")
+        result += convert_below_thousand(crores) + " Crore" + (" " if (lakhs or thousands or hundreds) else "")
     if lakhs:
-        result += convert_hundreds(lakhs) + " Lakh" + (" " if (thousands or hundreds) else "")
+        result += convert_below_thousand(lakhs) + " Lakh" + (" " if (thousands or hundreds) else "")
     if thousands:
-        result += convert_thousands(thousands) + " Thousand" + (" " if hundreds else "")
+        result += convert_below_thousand(thousands) + " Thousand" + (" " if hundreds else "")
     if hundreds:
-        result += convert_hundreds(hundreds)
+        result += convert_below_thousand(hundreds)  
 
     return result.strip() + " Rupees"
+
+# Example:
+print(number_to_words_rupees(5600))  
+print(number_to_words_rupees(5678))  
