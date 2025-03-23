@@ -9,7 +9,12 @@ from utils.gen_rec_img import generate_receipt_image
 from utils.save_csv import write_to_csv
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")  # Replace with your MongoDB URL if hosted remotely
+
+# Pranesh
+# client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")  # Replace with your MongoDB URL if hosted remotely
+
+# SRBS
+client = MongoClient("mongodb+srv://sriramabhakthasabha:hOsEFBpavwo374Hy@srbs.grssp.mongodb.net/?retryWrites=true&w=majority&appName=srbs")
 db = client["receipt_db"]  # Database name
 collection = db["receipts"]  # Collection name
 
@@ -44,6 +49,7 @@ def index():
                 output_folder="Receipts",
                 logo_path="logo/logo.jpg",
                 signature_path="logo/sign.png",
+                template_path="logo/Template.png"
             )
             counter = get_counter()
             # Save receipt data to the database

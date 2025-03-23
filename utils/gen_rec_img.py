@@ -31,11 +31,12 @@ def generate_receipt_image(
     output_folder,
     logo_path=None,
     signature_path=None,
+    template_path=None
 ):
     """Generates a PNG receipt image with address lines, amount, logo, border, signature, and different font sizes."""
 
     print("Inside generate function")
-    width, height = 800, 600
+    width, height = 1000, 600
     img = Image.new("RGB", (width, height), color="white")
     d = ImageDraw.Draw(img)
 
@@ -64,10 +65,10 @@ def generate_receipt_image(
     address_line1_text = f"{address_line1}"
     address_line2_text = f"{address_line2}"
     towards_text = f"Towards {ramothsava_year}th year ramothsava celebrations "
-    amount_text = f"₹{amount}"
+    amount_text = f"{amount}"
     amount_words_text = f"{amount_str} Only"
     sign_text = "Signature"
-    serial_num_txt = str(serial_num)
+    serial_num_txt = f"E{str(serial_num)}"
 
     template_name = "Received with thanks from Sri/Smt:"
     template_amount = "Amount: "
@@ -149,67 +150,115 @@ def generate_receipt_image(
     template_sl_no_y = formatted_date_y
     serial_num_y = formatted_date_y
 
-    d.text((srbs_x, srbs_y), srbs_text, fill="blue", font=receipt_font)
-    d.text((receipt_x, receipt_y), receipt_text, fill="blue", font=receipt_font)
-    d.text((name_x, name_y), name_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
-    d.text((template_name_x, template_name_y), template_name, fill="black", font=data_font)
-    d.text((phone_x, phone_y), phone_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+    # d.text((srbs_x, srbs_y), srbs_text, fill="blue", font=receipt_font)
+    # d.text((receipt_x, receipt_y), receipt_text, fill="blue", font=receipt_font)
+    # d.text((name_x, name_y), name_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+    # d.text((template_name_x, template_name_y), template_name, fill="black", font=data_font)
+    # d.text((phone_x, phone_y), phone_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+    # d.text(
+    #     (address_line1_x, address_line1_y),
+    #     address_line1_text,
+    #     fill="black",
+    #     font=address_font, stroke_width=input_stroke_width, stroke_fill='black'
+    # )
+    # d.text(
+    #     (address_line2_x, address_line2_y),
+    #     address_line2_text,
+    #     fill="black",
+    #     font=address_font, stroke_width=input_stroke_width, stroke_fill='black'
+    # )
+    # d.text((template_amount_x, template_amount_y), template_amount, fill="black", font=data_font)
+    # d.text((template_amount_words_x, template_amount_words_y), template_amount_words, fill="black", font=data_font)
+    # d.text((amount_x, amount_y), amount_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+    # d.text(
+    #     (amount_words_x, amount_words_y),
+    #     amount_words_text,
+    #     fill="black",
+    #     font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
+    # )
+    # d.text((towards_x, towards_y), towards_text, fill="black", font=data_font)
+    # d.text((sign_x - 20, sign_y - 10), sign_text, fill="black", font=data_font)
+    # d.text(
+    #     (formatted_date_x, formatted_date_y),
+    #     formatted_date,
+    #     fill="black",
+    #     font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
+    # )
+    # d.text((template_date_x, template_date_y), template_date, fill="black", font=data_font)
+    # d.text((template_sl_no_x, template_sl_no_y), template_sl_no, fill="black", font=data_font)
+    # d.text((serial_num_x, serial_num_y), serial_num_txt, fill="red", font=data_font)
+
+    # print("Added details to image")
+
+    # if logo_path and os.path.exists(logo_path):
+    #     try:
+    #         logo = Image.open(logo_path)
+    #         logo = logo.resize((100, 140))
+    #         img.paste(logo, (width - 140, 20))
+    #     except Exception as e:
+    #         print(f"Error adding logo: {e}")
+
+    # if signature_path and os.path.exists(signature_path):
+    #     try:
+    #         signature = Image.open(signature_path)
+    #         signature = signature.resize((100, 50))
+    #         img.paste(signature, (width - 110, height - 90))
+    #     except Exception as e:
+    #         print(f"Error adding signature: {e}")
+
+    # border_color = "black"
+    # border_width = 5
+    # d.rectangle(
+    #     [(10, 10), (width - 10, height - 10)], outline=border_color, width=border_width
+    # )
+
+    # Add the template image
+    if template_path and os.path.exists(template_path):
+        try:
+            logo = Image.open(template_path)
+            logo = logo.resize((width, height))
+            img.paste(logo, (0,0))
+        except Exception as e:
+            print(f"Error adding logo: {e}")
+
+    # Add serial Number
+    d.text((100, 240), serial_num_txt, fill="red", font=data_font)
+
+    # Add Date
+    d.text((730, 230), formatted_date, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+
+    # Add name
+    d.text((680, 285), name_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+
+    # Add Address
     d.text(
-        (address_line1_x, address_line1_y),
-        address_line1_text,
-        fill="black",
-        font=address_font, stroke_width=input_stroke_width, stroke_fill='black'
-    )
-    d.text(
-        (address_line2_x, address_line2_y),
+        (100, 335),
         address_line2_text,
         fill="black",
         font=address_font, stroke_width=input_stroke_width, stroke_fill='black'
     )
-    d.text((template_amount_x, template_amount_y), template_amount, fill="black", font=data_font)
-    d.text((template_amount_words_x, template_amount_words_y), template_amount_words, fill="black", font=data_font)
-    d.text((amount_x, amount_y), amount_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+
+    # Add Amount in words
     d.text(
-        (amount_words_x, amount_words_y),
+        (260, 425),
         amount_words_text,
         fill="black",
         font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
     )
-    d.text((towards_x, towards_y), towards_text, fill="black", font=data_font)
-    d.text((sign_x - 20, sign_y - 10), sign_text, fill="black", font=data_font)
-    d.text(
-        (formatted_date_x, formatted_date_y),
-        formatted_date,
-        fill="black",
-        font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
-    )
-    d.text((template_date_x, template_date_y), template_date, fill="black", font=data_font)
-    d.text((template_sl_no_x, template_sl_no_y), template_sl_no, fill="black", font=data_font)
-    d.text((serial_num_x, serial_num_y), serial_num_txt, fill="red", font=data_font)
 
-    print("Added details to image")
+    # Add amount in integers
+    d.text((100, 550), amount_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
 
-    if logo_path and os.path.exists(logo_path):
-        try:
-            logo = Image.open(logo_path)
-            logo = logo.resize((100, 140))
-            img.paste(logo, (width - 140, 20))
-        except Exception as e:
-            print(f"Error adding logo: {e}")
-
+    # Add Signature
     if signature_path and os.path.exists(signature_path):
         try:
             signature = Image.open(signature_path)
             signature = signature.resize((100, 50))
-            img.paste(signature, (width - 110, height - 90))
+            img.paste(signature, (width - 250, height - 90))
         except Exception as e:
             print(f"Error adding signature: {e}")
 
-    border_color = "black"
-    border_width = 5
-    d.rectangle(
-        [(10, 10), (width - 10, height - 10)], outline=border_color, width=border_width
-    )
+    
     buffer = BytesIO()
     img.save(buffer, format="PNG")
     buffer.seek(0)  # Reset buffer position for reading
