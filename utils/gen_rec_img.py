@@ -53,6 +53,7 @@ def generate_receipt_image(
         receipt_font = ImageFont.load_default()
         data_font = ImageFont.load_default()
         address_font = ImageFont.load_default()
+        amount_int_font = ImageFont.load_default()
 
     print("Fonts generated")
 
