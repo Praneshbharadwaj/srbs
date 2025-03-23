@@ -80,7 +80,7 @@
 <body>
     <div class="form-container">
         <h1>Receipt Generator</h1>
-        <form method="POST" class="form">
+        <form method="POST" class="form" id="receiptForm">
             <label for="name">Name:</label><br>
             <input type="text" id="name" name="name" required><br><br>
             <label for="phone">Phone Number (with country code):</label><br>
@@ -97,8 +97,25 @@
                 <option value="cheque">Cheque</option>
                 <option value="UPI">UPI</option>
             </select><br><br>
+            <div id="reference_field" style="display: none;">
+                <label for="reference_number">Reference Number:</label><br>
+                <input type="text" id="reference_number" name="reference_number"><br><br>
+            </div>
             <input type="submit" value="Generate Receipt">
         </form>
     </div>
+
+    <script>
+        document.getElementById('payment_type').addEventListener('change', function() {
+            var referenceField = document.getElementById('reference_field');
+            if (this.value === 'cheque' || this.value === 'UPI') {
+                referenceField.style.display = 'block';
+                document.getElementById('reference_number').required = true;
+            } else {
+                referenceField.style.display = 'none';
+                 document.getElementById('reference_number').required = false;
+            }
+        });
+    </script>
 </body>
 </html>

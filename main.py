@@ -36,6 +36,11 @@ def index():
         address_line2 = request.form["address_line2"]
         amount = request.form["amount"]
         phone_no_plus = "+" + phone if not phone.startswith("+") else phone
+        payment_type = request.form["payment_type"]
+        reference_number = None #Initialize to none, in case it is not provided.
+
+        if payment_type == "cheque" or payment_type == "UPI":
+            reference_number = request.form.get("reference_number") #Use .get to prevent key errors.
 
         print("Submit pressed and details fetched")
         try:
@@ -46,6 +51,8 @@ def index():
                 address_line1=address_line1,
                 address_line2=address_line2,
                 amount=amount,
+                payment_type=payment_type,
+                reference_number=reference_number,
                 output_folder="Receipts",
                 logo_path="logo/logo.jpg",
                 signature_path="logo/sign.png",

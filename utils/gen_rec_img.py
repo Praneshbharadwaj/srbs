@@ -15,7 +15,7 @@ from datetime import datetime
 from utils.serial_num import increment_counter
 
 ramothsava_year = 119
-input_stroke_width = int(0.5)
+input_stroke_width = int(0.7)
 
 input_name_x = 320
 client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")  # Replace with your MongoDB URL if hosted remotely
@@ -29,9 +29,11 @@ def generate_receipt_image(
     address_line2,
     amount,
     output_folder,
+    reference_number,
+    payment_type,
     logo_path=None,
     signature_path=None,
-    template_path=None
+    template_path=None,
 ):
     """Generates a PNG receipt image with address lines, amount, logo, border, signature, and different font sizes."""
 
@@ -46,6 +48,7 @@ def generate_receipt_image(
         receipt_font = ImageFont.truetype("arial.ttf", 32)
         data_font = ImageFont.truetype("arial.ttf", 18)
         address_font = ImageFont.truetype("arial.ttf", 18)
+        amount_int_font = ImageFont.truetype("arial.ttf", 32)
     except IOError:
         receipt_font = ImageFont.load_default()
         data_font = ImageFont.load_default()
@@ -69,6 +72,8 @@ def generate_receipt_image(
     amount_words_text = f"{amount_str} Only"
     sign_text = "Signature"
     serial_num_txt = f"E{str(serial_num)}"
+    payment_type_txt = f"{payment_type}:"
+    reference_num_txt = f"{reference_number}"
 
     template_name = "Received with thanks from Sri/Smt:"
     template_amount = "Amount: "
@@ -246,8 +251,33 @@ def generate_receipt_image(
         font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
     )
 
+    if payment_type == "cash":
+        # Add payment type and refernce number
+        d.text(
+            (245, 470),
+            "Cash",
+            fill="black",
+            font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
+        )
+    elif reference_number is not None:
+        # Add payment type and refernce number
+        d.text(
+            (245, 470),
+            payment_type_txt,
+            fill="black",
+            font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
+        )
+        # Add payment type and refernce number
+        d.text(
+            (350, 470),
+            reference_num_txt,
+            fill="black",
+            font=data_font, stroke_width=input_stroke_width, stroke_fill='black'
+        )
+
+
     # Add amount in integers
-    d.text((100, 550), amount_text, fill="black", font=data_font, stroke_width=input_stroke_width, stroke_fill='black')
+    d.text((100, 540), amount_text, fill="black", font=amount_int_font, stroke_width=input_stroke_width, stroke_fill='black')
 
     # Add Signature
     if signature_path and os.path.exists(signature_path):
@@ -257,6 +287,8 @@ def generate_receipt_image(
             img.paste(signature, (width - 250, height - 90))
         except Exception as e:
             print(f"Error adding signature: {e}")
+
+    
 
     
     buffer = BytesIO()
