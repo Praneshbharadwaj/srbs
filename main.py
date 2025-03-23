@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import os
 import traceback
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -52,7 +53,8 @@ def index():
                 "address_line1": address_line1,
                 "address_line2": address_line2,
                 "amount": amount,
-                "counter": counter
+                "counter": counter,
+                "timestamp" : datetime.now()
             }
             collection.insert_one(receipt_data)
 
