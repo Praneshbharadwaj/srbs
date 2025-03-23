@@ -21,6 +21,16 @@ def increment_counter():
         return None
 
 
+def get_counter():
+    try:
+        result = collection.find_one({})
+        return result["counter"]
+
+    except Exception as e:
+        # Handle other potential errors
+        print(f"An error occurred: {e}")
+        return None
+
 # if __name__ == "__main__":
 #     # Example usage:
 #     counter_value = increment_counter()

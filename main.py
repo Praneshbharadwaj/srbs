@@ -17,7 +17,7 @@ import io
 from flask import Flask, render_template, request, send_file
 from PIL import Image
 from utils.num2str import *
-from utils.serial_num import increment_counter
+from utils.serial_num import get_counter
 from datetime import datetime
 
 @app.route("/", methods=["GET", "POST"])
@@ -44,7 +44,7 @@ def index():
                 logo_path="logo/logo.jpg",
                 signature_path="logo/sign.png",
             )
-
+            counter = get_counter()
             # Save receipt data to the database
             receipt_data = {
                 "name": name,
@@ -52,6 +52,7 @@ def index():
                 "address_line1": address_line1,
                 "address_line2": address_line2,
                 "amount": amount,
+                "counter": counter
             }
             collection.insert_one(receipt_data)
 
