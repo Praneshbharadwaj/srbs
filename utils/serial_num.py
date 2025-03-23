@@ -1,48 +1,19 @@
-def increment_counter(filepath="counter.txt"):
-    """
-    Reads a counter from a text file, increments it, and writes it back.
+from pymongo import MongoClient
 
-    Args:
-        filepath (str): The path to the counter file. Defaults to "counter.txt".
 
-    Returns:
-        int: The incremented counter value, or None if an error occurred.
-    """
+input_name_x = 320
+client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")  # Replace with your MongoDB URL if hosted remotely
+db = client["receipt_db"]  # Database name
+collection = db["serial_number_counter"]
+def increment_counter():
     try:
-        # Read the current counter value
-        with open(filepath, "r") as f:
-            counter = int(f.read().strip())
-
-        # Increment the counter
-        counter += 1
-
-        # Write the updated counter value back to the file
-        with open(filepath, "w") as f:
-            f.write(str(counter))
-
-        return counter
-
-    except FileNotFoundError:
-        # Handle the case where the file doesn't exist
-        print(f"File '{filepath}' not found. Creating file and initializing counter to 1.")
-        try:
-            with open(filepath, "w") as f:
-                f.write("1")
-            return 1 #Return 1 because it's the first time
-        except Exception as e:
-            print(f"Error creating or initializing file: {e}")
-            return None
-
-    except ValueError:
-        # Handle the case where the file content is not a valid integer
-        print(f"Error: Invalid counter value in '{filepath}'. Resetting to 1.")
-        try:
-            with open(filepath, "w") as f:
-                f.write("1")
-            return 1
-        except Exception as e:
-            print(f"Error resetting counter: {e}")
-            return None
+        result = collection.find_one_and_update(
+            {},
+            {"$inc":{"counter":1}},
+            upsert=True,
+            return_document=True
+        )
+        return result["counter"]
 
     except Exception as e:
         # Handle other potential errors

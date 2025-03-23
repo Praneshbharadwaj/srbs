@@ -3,6 +3,8 @@ from PIL import Image, ImageDraw, ImageFont
 import os
 from io import BytesIO
 
+from pymongo import MongoClient
+
 app = Flask(__name__)
 
 from PIL import Image, ImageDraw, ImageFont
@@ -16,6 +18,9 @@ ramothsava_year = 119
 input_stroke_width = int(0.5)
 
 input_name_x = 320
+client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")  # Replace with your MongoDB URL if hosted remotely
+db = client["receipt_db"]  # Database name
+collection = db["serial_number_counter"]  # Collection name
 
 def generate_receipt_image(
     name,
@@ -47,7 +52,7 @@ def generate_receipt_image(
 
     print("Fonts generated")
 
-    serial_num = increment_counter("Receipts/serial_num.txt")
+    serial_num = increment_counter()
     # Convert amount ruppes to words
     now = datetime.now()
     formatted_date = now.strftime("%d-%m-%Y")
