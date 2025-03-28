@@ -45,14 +45,15 @@ def generate_receipt_image(
     print("Image created")
 
     try:
-        receipt_font = ImageFont.truetype("arial.ttf", 32)
-        data_font = ImageFont.truetype("arial.ttf", 18)
-        address_font = ImageFont.truetype("arial.ttf", 18)
-        amount_int_font = ImageFont.truetype("arial.ttf", 32)
+        receipt_font = ImageFont.truetype("static/arial.ttf", 32)
+        data_font = ImageFont.truetype("static/arial.ttf", 18)
+        address_font = ImageFont.truetype("static/arial.ttf", 18)
+        amount_int_font = ImageFont.truetype("static/arial.ttf", 32)
     except IOError:
         receipt_font = ImageFont.load_default()
         data_font = ImageFont.load_default()
         address_font = ImageFont.load_default()
+        amount_int_font = ImageFont.load_default()
 
     print("Fonts generated")
 
