@@ -50,7 +50,7 @@ def index():
             payment_type = request.form["payment_type"]
             reference_number = request.form.get("reference_number", None)  
 
-            phone_no_plus = "+" + phone if not phone.startswith("+") else phone
+            phone_no_plus = "+91 " + phone if not phone.startswith("+") else phone
 
             # Generate the receipt image in memory
             img_buffer = generate_receipt_image(
