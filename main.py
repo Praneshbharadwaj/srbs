@@ -78,7 +78,7 @@ def index():
             print("Generated IMG!")
             print(image_url)
             print("sending sms")
-            send_sms(phone,f'''HiFive Thousand Six Hundred Rupees   
+            send_sms(phone,f''' 
                 {image_url}
                      
                      ''')
