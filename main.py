@@ -62,6 +62,7 @@ def index():
             )
             counter = get_counter()
             # Save receipt data to the database
+            image_url = upload_image_to_C(img_buffer,f"{name}_{phone}.png")
             receipt_data = {
                 "name": name,
                 "phone": phone_no_plus,
@@ -71,17 +72,17 @@ def index():
                 "counter": counter,
                 "timestamp" : datetime.now(),
                 "payment_type":payment_type,
-                "reference_number":reference_number
+                "reference_number":reference_number,
+                "image_url" : image_url
             }
             collection.insert_one(receipt_data)
-            image_url = upload_image_to_C(img_buffer,f"{name}_{phone}.png")
             print("Generated IMG!")
             print(image_url)
             print("sending sms")
-            send_sms(phone,f''' 
-                {image_url}
+            # send_sms(phone,f''' 
+            #     {image_url}
                      
-                     ''')
+            #          ''')
             response =  send_file(
                 img_buffer,
                 mimetype="image/png",
