@@ -1,110 +1,186 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sri Rama Bhaktha Sabha (R) - Receipt Generator</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
             margin: 0;
+            padding: 0;
         }
 
-        .h1 {
-            text-align: center;
-            color: #333;
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
             margin-bottom: 20px;
         }
 
-        .form {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 400px;
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #333;
         }
 
         label {
-            display: block;
-            margin-bottom: 8px;
             font-weight: bold;
-            color: #555;
+            display: block;
+            margin-bottom: 5px;
         }
 
-        input[type="text"],
-        input[type="tel"],
-        input[type="number"],
+        input,
         select {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
+            font-size: 14px;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
+        button {
+            width: 100%;
+            background-color: #28a745;
             color: white;
-            padding: 12px 20px;
+            padding: 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .table-container {
             width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
 
-        select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23333" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 8px;
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
         }
 
-        select::-ms-expand {
-            display: none;
+        th {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        th:hover {
+            background-color: #0056b3;
+        }
+
+        input[type="text"] {
+            width: 50%;
+            margin: 10px 0;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        @media screen and (max-width: 768px) {
+
+            .container,
+            .table-container {
+                width: 100%;
+            }
+
+            table {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="form-container">
+
+    <div class="container">
         <h1>Receipt Generator</h1>
-        <form method="POST" class="form" id="receiptForm">
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
-            <label for="phone">Phone Number (with country code):</label><br>
-            <input type="tel" id="phone" name="phone" required><br><br>
-            <label for="address_line1">Address Line 1:</label><br>
-            <input type="text" id="address_line1" name="address_line1" required><br><br>
-            <label for="address_line2">Address Line 2:</label><br>
-            <input type="text" id="address_line2" name="address_line2"><br><br>
-            <label for="amount">Amount (Rupees):</label><br>
-            <input type="number" id="amount" name="amount" required><br><br>
-            <label for="payment_type">Payment Type:</label><br>
-            <select id="payment_type" name="payment_type" required>
+        <form method="POST" id="receiptForm">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Phone Number:</label>
+            <input type="tel" name="phone" required>
+
+            <label>Address Line 1:</label>
+            <input type="text" name="address_line1" required>
+
+            <label>Address Line 2:</label>
+            <input type="text" name="address_line2">
+
+            <label>Amount (Rupees):</label>
+            <input type="number" name="amount" required>
+
+            <label>Payment Type:</label>
+            <select name="payment_type" id="payment_type" required>
                 <option value="cash">Cash</option>
                 <option value="cheque">Cheque</option>
                 <option value="UPI">UPI</option>
-            </select><br><br>
+            </select>
+
             <div id="reference_field" style="display: none;">
-                <label for="reference_number">Reference Number:</label><br>
-                <input type="text" id="reference_number" name="reference_number"><br><br>
+                <label>Reference Number:</label>
+                <input type="text" name="reference_number" id="reference_number">
             </div>
-            <input type="submit" value="Generate Receipt">
+
+            <button type="submit">Generate Receipt</button>
         </form>
+    </div>
+
+    <div class="table-container">
+        <h2>Receipt Records</h2>
+        <input type="text" id="searchBox" placeholder="Search..." onkeyup="filterTable()">
+        <table id="receiptTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Name</th>
+                    <th onclick="sortTable(1)">Phone</th>
+                    <th onclick="sortTable(2)">Address</th>
+                    <th onclick="sortTable(3)">Amount</th>
+                    <th onclick="sortTable(4)">Payment Type</th>
+                    <th onclick="sortTable(5)">Reference</th>
+                    <th onclick="sortTable(6)">Timestamp</th>
+                    <th onclick="sortTable(6)">Image_Url</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Data will be injected here via JavaScript -->
+            </tbody>
+        </table>
     </div>
 
     <script>
@@ -118,7 +194,80 @@
                 document.getElementById('reference_number').required = false;
             }
         });
+
+        async function fetchData() {
+            const response = await fetch('/get-receipts');
+            const data = await response.json();
+            const tableBody = document.getElementById("tableBody");
+
+            tableBody.innerHTML = "";
+
+            data.forEach(receipt => {
+                const row = `<tr>
+                    <td>${receipt.name}</td>
+                    <td>${receipt.phone}</td>
+                    <td>${receipt.address_line1} ${receipt.address_line2 || ''}</td>
+                    <td>${receipt.amount}</td>
+                    <td>${receipt.payment_type}</td>
+                    <td>${receipt.reference_number || 'N/A'}</td>
+                    <td>${new Date(receipt.timestamp).toLocaleString()}</td>
+                    <td>${receipt.image_url}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        let sortDirection = {};
+
+        function sortTable(columnIndex) {
+            let table = document.getElementById("receiptTable");
+            let rows = Array.from(table.rows).slice(1); // Exclude header
+            let isAscending = !sortDirection[columnIndex]; // Toggle direction
+
+            rows.sort((rowA, rowB) => {
+                let cellA = rowA.cells[columnIndex].textContent.trim();
+                let cellB = rowB.cells[columnIndex].textContent.trim();
+
+                // Check if sorting by Timestamp column (index 6)
+                if (columnIndex === 6) {
+                    let dateA = new Date(cellA);
+                    let dateB = new Date(cellB);
+                    return isAscending ? dateA - dateB : dateB - dateA; // Recent first
+                }
+
+                // Numeric sorting for amount
+                if (!isNaN(cellA) && !isNaN(cellB)) {
+                    return isAscending ? cellA - cellB : cellB - cellA;
+                }
+
+                return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+            });
+
+            sortDirection[columnIndex] = isAscending;
+
+            let tbody = table.querySelector("tbody");
+            tbody.innerHTML = "";
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        function filterTable() {
+            let input = document.getElementById("searchBox").value.toLowerCase();
+            let rows = document.querySelectorAll("#receiptTable tbody tr");
+
+            rows.forEach(row => {
+                let match = false;
+                row.querySelectorAll("td").forEach(cell => {
+                    if (cell.textContent.toLowerCase().includes(input)) {
+                        match = true;
+                    }
+                });
+                row.style.display = match ? "" : "none";
+            });
+        }
+
+        window.onload = fetchData;
     </script>
+
 </body>
 
 </html>
