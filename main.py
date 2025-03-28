@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, jsonify, render_template, request, send_file
 import os
 import traceback
 from datetime import datetime
+from utils.store_image import *
 
 
 app = Flask(__name__)
 from utils.gen_rec_img import generate_receipt_image
 from utils.save_csv import write_to_csv
 from pymongo import MongoClient
+from utils.sendsmsToPhone import send_sms
 
 
 # Pranesh
@@ -67,27 +69,39 @@ def index():
                 "address_line2": address_line2,
                 "amount": amount,
                 "counter": counter,
-                "timestamp" : datetime.now()
+                "timestamp" : datetime.now(),
+                "payment_type":payment_type,
+                "reference_number":reference_number
             }
             collection.insert_one(receipt_data)
-
+            image_url = upload_image_to_C(img_buffer,f"{name}_{phone}.png")
             print("Generated IMG!")
-
-            # Send the image from memory directly
-            return send_file(
+            print(image_url)
+            print("sending sms")
+            send_sms(phone,f'''HiFive Thousand Six Hundred Rupees   
+                {image_url}
+                     
+                     ''')
+            response =  send_file(
                 img_buffer,
                 mimetype="image/png",
                 as_attachment=True,
                 download_name=f"{name}_{phone}.png"
             )
-
+            response.headers["Refresh"] = "3; url=/"
+            return response
+            
         except Exception as e:
             tb = traceback.format_exc()
             print(f"Error occurred:\n{tb}")
             return render_template("error.html", error_message=f"An error occurred:\n{tb}")
 
     return render_template("index.html")
-
+@app.route("/get-receipts",methods = ["GET"])
+def getIdata():
+    data = collection.find({},{"_id":0})
+    print(data)
+    return jsonify(list(data))
 
 
 
