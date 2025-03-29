@@ -98,5 +98,18 @@ def get_data():
     data = collection.find({}, {"_id": 0})
     return jsonify(list(data))
 
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    data = request.json
+    print("Received webhook:", data)  # Log the response
+
+    # Extract relevant details
+    message_id = data.get("id")
+    status = data.get("status")
+
+    print(f"Message ID: {message_id}, Status: {status}")
+
+    return jsonify({"status": "received"}), 200
+
 if __name__ == "__main__":
     app.run(debug=True)
