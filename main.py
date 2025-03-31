@@ -8,6 +8,7 @@ from utils.gen_rec_img import generate_receipt_image
 from utils.store_image import upload_image_to_C
 from utils.serial_num import get_counter
 import bcrypt
+from test_whatsapp import send_whatsapp_message
 
 app = Flask(__name__)
 app.secret_key = "Y79F1]g8['Y?"
@@ -22,6 +23,7 @@ collection = db["receipts"]  # Collection name
 def async_store_data(name, phone, address_line1, address_line2, amount, payment_type, reference_number,img_buffer, image_url, counter):
     """Asynchronously store receipt details in MongoDB and upload image."""
     image_url = upload_image_to_C(img_buffer,f"{name}_{phone}.png")
+    send_whatsapp_message(name=name,receipt_url=image_url,amount=amount,phone=phone,year=year,invitation_url="https://drive.google.com/file/d/1i-XBTJx0kLYWnp2ARjUIZ2-VHgeX_cvf/view?usp=drive_link")
     try:
         receipt_data = {
             "name": name,
