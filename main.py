@@ -14,9 +14,9 @@ app = Flask(__name__)
 app.secret_key = "Y79F1]g8['Y?"
 
 # SRBS MongoDB Connection (Commented for reference)
-# client = MongoClient("mongodb+srv://sriramabhakthasabha:hOsEFBpavwo374Hy@srbs.grssp.mongodb.net/?retryWrites=true&w=majority&appName=srbs")
+client = MongoClient("mongodb+srv://sriramabhakthasabha:hOsEFBpavwo374Hy@srbs.grssp.mongodb.net/?retryWrites=true&w=majority&appName=srbs")
 # Pranesh's MongoDB Connection
-client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+# client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["receipt_db"]  # Database name
 collection = db["receipts"]  # Collection name
 year = "119th"
