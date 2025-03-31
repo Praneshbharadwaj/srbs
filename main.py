@@ -19,7 +19,7 @@ client = MongoClient("mongodb+srv://sriramabhakthasabha:hOsEFBpavwo374Hy@srbs.gr
 # client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["receipt_db"]  # Database name
 collection = db["receipts"]  # Collection name
-
+year = "119th"
 def async_store_data(name, phone, address_line1, address_line2, amount, payment_type, reference_number,img_buffer, image_url, counter):
     """Asynchronously store receipt details in MongoDB and upload image."""
     image_url = upload_image_to_C(img_buffer,f"{name}_{phone}.png")
