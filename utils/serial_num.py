@@ -3,8 +3,8 @@ from pymongo import MongoClient
 
 input_name_x = 320
 
-client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-# client = MongoClient("mongodb+srv://sriramabhakthasabha:hOsEFBpavwo374Hy@srbs.grssp.mongodb.net/?retryWrites=true&w=majority&appName=srbs")  # Replace with your MongoDB URL if hosted remotely
+# client = MongoClient("mongodb+srv://praneshbharadwaj631:Pranesh%40200323@cluster0.gwupm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient("mongodb+srv://sriramabhakthasabha:hOsEFBpavwo374Hy@srbs.grssp.mongodb.net/?retryWrites=true&w=majority&appName=srbs")  # Replace with your MongoDB URL if hosted remotely
 db = client["receipt_db"]  # Database name
 collection = db["serial_number_counter"]
 def increment_counter():
